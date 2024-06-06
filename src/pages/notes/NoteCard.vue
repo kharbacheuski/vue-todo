@@ -7,12 +7,12 @@
                 style="font-size: 1.5rem"
                 @click="copyToClipboard(note.title)"
             ></i>
-            <i class="pi pi-times card-delete" style="font-size: 1.5rem" @click="deleteNote()"></i>
             <i
                 class="pi pi-pencil card-edit"
                 style="font-size: 1.5rem"
                 @click="setEditingNoteId()"
             ></i>
+            <i class="pi pi-times card-delete" style="font-size: 1.5rem" @click="deleteNote()"></i>
         </div>
         <Message style="position: fixed; bottom: 50px; left: 50px" v-if="isCopied"
             >Note title copied to clipboard</Message
