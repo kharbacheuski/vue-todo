@@ -6,16 +6,16 @@
                 <h2>Here you can create new notes</h2>
 
                 <note-input
-                    @add-note="addNote"
-                    :error="error"
-                    :editingNoteId="editingNoteId"
+                    :input="input"
                     @edit-note="editNote"
-                    @cancel-edit="setEditingNoteId(null)"
+                    @cancel-edit="setEditingNote(null)"
+                    @add-note="addNote"
                 />
                 <note-list
+                    :editingNoteId="input.editingNoteId"
                     :notes="notes"
                     @delete-note="deleteNote"
-                    @set-editing-note-id="setEditingNoteId"
+                    @set-editing-note="setEditingNote"
                 />
 
                 <div class="spoiler">
@@ -32,8 +32,8 @@
     <Message
         severity="error"
         style="position: fixed; bottom: 50px; left: 50px; width: 300px"
-        v-if="deletedNoteId"
-        >Note {{ deletedNoteId }} deleted</Message
+        v-if="isDeleteMessageVisible"
+        >Note deleted</Message
     >
 </template>
 
@@ -58,12 +58,14 @@ export default {
     },
     data() {
         return {
-            editingNoteId: null,
-            notes: [],
-            error: {
-                message: null
+            input: {
+                isNoteEditing: false,
+                editingNoteId: null,
+                value: ''
             },
-            deletedNoteId: null
+            isDeleteMessageVisible: false,
+            
+            notes: [],
         }
     },
     beforeMount() {
@@ -82,29 +84,28 @@ export default {
         deleteNote(noteId) {
             this.notes = this.notes.filter((note) => note.id !== noteId)
             this.setNotes()
-            this.deletedNoteId = noteId
+            this.isDeleteMessageVisible = true
+
             setTimeout(() => {
-                this.deletedNoteId = null
+                this.isDeleteMessageVisible = false
             }, 5000)
         },
         addNote(value) {
-            if (!value) {
-                this.error.message = 'Please enter title'
-                return
-            }
-            this.error.message = null
-            this.notes.push({
+            this.notes.unshift({
                 id: random(),
                 title: value
             })
             this.setNotes()
+            this.input.value = ''
         },
-        setEditingNoteId(id) {
-            this.editingNoteId = id
+        setEditingNote(editingNote) {
+            this.input.isNoteEditing = !!editingNote
+            this.input.value = editingNote?.title || ''
+            this.input.editingNoteId = editingNote?.id || null
         },
         editNote(value) {
             this.notes = this.notes.map((note) => {
-                if (note.id === this.editingNoteId) {
+                if (note.id === this.input.editingNoteId) {
                     return {
                         ...note,
                         title: value
@@ -112,9 +113,11 @@ export default {
                 }
                 return note
             })
-
-            this.setEditingNoteId(null)
             this.setNotes()
+
+            this.input.isNoteEditing = false
+            this.input.editingNoteId = null
+            this.input.value = ''
         }
     }
 }

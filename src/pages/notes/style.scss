@@ -11,6 +11,10 @@
         position: relative;
         padding: 30px 40px;
 
+        &.editing {
+            border: 1px solid var(--primary-color);
+        }
+
         &:hover {
             transform: none;
 

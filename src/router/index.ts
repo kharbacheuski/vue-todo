@@ -11,7 +11,8 @@ const routes = [
     { path: '/notes', component: NotesPage },
     { path: '/calculator', component: CalculatorPage },
     { path: '/about', component: AboutPage },
-    { path: '/:pathMatch(.*)*', component: NotFoundPage }
+    { path: '/404', component: NotFoundPage },
+    { path: '/:pathMatch(.*)*', redirect: '/404' }
 ]
 
 export const router = createRouter({

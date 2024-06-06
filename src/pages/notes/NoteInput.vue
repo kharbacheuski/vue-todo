@@ -7,24 +7,25 @@
                 rows="4"
                 cols="80"
                 type="text"
-                :placeholder="editingNoteId ? 'Enter new title' : 'Enter title'"
-                v-model="value"
-                :invalid="error.message ? true : false"
+                :placeholder="input.isNoteEditing ? 'Enter new title' : 'Enter title'"
+                v-model="input.value"
+                :invalid="error ? true : false"
+                @input="clearError()"
             />
-            <InlineMessage v-if="error.message" severity="error" id="error">{{
-                error.message
+            <InlineMessage v-if="error" severity="error" id="error">{{
+                error
             }}</InlineMessage>
         </div>
         <Button
-            :severity="editingNoteId ? 'info' : 'primary'"
-            :label="editingNoteId ? 'Edit' : 'Create'"
-            @click="editingNoteId ? $emit('edit-note', value) : $emit('add-note', value)"
+            :severity="input.isNoteEditing ? 'info' : 'primary'"
+            :label="input.isNoteEditing ? 'Edit' : 'Create'"
+            @click="input.isNoteEditing ? editNote() : addNote()"
         />
         <Button
-            v-if="editingNoteId"
+            v-if="input.isNoteEditing"
             severity="secondary"
             label="Cancel"
-            @click="$emit('cancel-edit')"
+            @click="cancelEdit()"
         />
     </div>
 </template>
@@ -42,16 +43,35 @@ export default {
     components: {
         Button: Button,
         InputText: Textarea,
-        InlineMessage: InlineMessage
+        InlineMessage: InlineMessage,
     },
     data() {
         return {
-            value: ''
+            value: "",
+            error: null
         }
     },
     props: {
-        error: Object,
-        editingNoteId: Number | null
+        input: Object
+    },
+    methods: {
+        addNote() {
+            if (!this.input.value) {
+                this.error = 'Please enter title'
+                return
+            }
+            
+            this.$emit('add-note', this.input.value)
+        },
+        editNote() {
+            this.$emit('edit-note', this.input.value)
+        },
+        cancelEdit() {
+            this.$emit('cancel-edit')
+        },
+        clearError() {
+            this.error = null
+        }
     }
 }
 </script>
