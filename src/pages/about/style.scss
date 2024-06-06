@@ -1,0 +1,17 @@
+.about {
+    margin: 200px 0 0;
+
+    p {
+        margin: 15px 0;
+
+        a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+    }
+    .tags {
+        margin-top: 50px;
+        display: flex;
+        gap: 10px;
+    }
+}

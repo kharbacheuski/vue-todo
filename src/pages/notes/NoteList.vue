@@ -23,6 +23,6 @@ export default {
     },
     props: {
         notes: Array
-    },
+    }
 }
 </script>
