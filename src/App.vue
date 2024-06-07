@@ -22,7 +22,7 @@ export default {
     methods: {
         getClass(path) {
             let route = path.replace('/', '')
-            if(route == '') route = 'home'
+            if (route == '') route = 'home'
 
             return 'page-' + route
         }

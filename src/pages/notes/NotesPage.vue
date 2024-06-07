@@ -38,12 +38,14 @@
 </template>
 
 <script>
-import { random } from '@/utils'
 import NoteInput from './NoteInput.vue'
 import NoteList from './NoteList.vue'
 import './style.scss'
 import PageNavigation from '@/components/layout/PageNavigation.vue'
 import Message from 'primevue/message'
+import NotesService from '@/services/notes'
+
+const notesService = new NotesService()
 
 /**
  * @module NotesPage list of all user notes
@@ -64,26 +66,19 @@ export default {
                 value: ''
             },
             isDeleteMessageVisible: false,
-            
-            notes: [],
+
+            notes: []
         }
     },
     beforeMount() {
-        this.getNotes()
+        this.notes = notesService.getNotes()
     },
     methods: {
         setNotes() {
-            localStorage.setItem('notes', JSON.stringify(this.notes))
-        },
-        getNotes() {
-            this.notes = JSON.parse(localStorage.getItem('notes'))
-            if (!this.notes) {
-                this.notes = []
-            }
+            notesService.setNotes(this.notes)
         },
         deleteNote(noteId) {
-            this.notes = this.notes.filter((note) => note.id !== noteId)
-            this.setNotes()
+            this.notes = notesService.deleteNote(noteId, this.notes)
             this.isDeleteMessageVisible = true
 
             setTimeout(() => {
@@ -91,11 +86,7 @@ export default {
             }, 5000)
         },
         addNote(value) {
-            this.notes.unshift({
-                id: random(),
-                title: value
-            })
-            this.setNotes()
+            this.notes = notesService.addNote(value, this.notes)
             this.input.value = ''
         },
         setEditingNote(editingNote) {
@@ -104,16 +95,7 @@ export default {
             this.input.editingNoteId = editingNote?.id || null
         },
         editNote(value) {
-            this.notes = this.notes.map((note) => {
-                if (note.id === this.input.editingNoteId) {
-                    return {
-                        ...note,
-                        title: value
-                    }
-                }
-                return note
-            })
-            this.setNotes()
+            this.notes = notesService.editNote(this.input.editingNoteId, value, this.notes)
 
             this.input.isNoteEditing = false
             this.input.editingNoteId = null

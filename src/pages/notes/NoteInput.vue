@@ -12,9 +12,7 @@
                 :invalid="error ? true : false"
                 @input="clearError()"
             />
-            <InlineMessage v-if="error" severity="error" id="error">{{
-                error
-            }}</InlineMessage>
+            <InlineMessage v-if="error" severity="error" id="error">{{ error }}</InlineMessage>
         </div>
         <Button
             :severity="input.isNoteEditing ? 'info' : 'primary'"
@@ -43,11 +41,11 @@ export default {
     components: {
         Button: Button,
         InputText: Textarea,
-        InlineMessage: InlineMessage,
+        InlineMessage: InlineMessage
     },
     data() {
         return {
-            value: "",
+            value: '',
             error: null
         }
     },
@@ -60,7 +58,7 @@ export default {
                 this.error = 'Please enter title'
                 return
             }
-            
+
             this.$emit('add-note', this.input.value)
         },
         editNote() {

@@ -4,7 +4,7 @@ import 'primevue/resources/themes/aura-light-indigo/theme.css'
 
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
-import { router } from '@/router/index'
+import { router } from '@/utils/router'
 
 import App from '@/App.vue'
 
