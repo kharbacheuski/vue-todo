@@ -1,0 +1,32 @@
+.contacts {
+    margin: 200px 0 0;
+
+    p {
+        margin: 15px 0;
+
+        a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+    }
+    .links {
+        margin-top: 50px;
+        display: flex;
+        gap: 20px;
+
+        a {
+            color: unset;
+        }
+
+        .pi {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+
+            &:hover {
+                color: var(--primary-color);
+                transform: scale(1.2);
+            }
+        }
+    }
+}

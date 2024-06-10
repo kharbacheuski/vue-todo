@@ -13,13 +13,6 @@
                         </article>
                     </RouterLink>
 
-                    <RouterLink class="card-link" to="/calculator">
-                        <article class="card">
-                            <h3 class="card_title">Calculator</h3>
-                            <p class="card_description">Calculate your math</p>
-                        </article>
-                    </RouterLink>
-
                     <RouterLink class="card-link" to="/about">
                         <article class="card">
                             <h3 class="card_title">About</h3>
